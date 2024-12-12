@@ -7,6 +7,10 @@ const cors = require("cors");
 const hbs = require("hbs");   //partial ke liye
 const path = require("path");
 require("./db/connection");
+const bcrypt = require("bcryptjs")
+
+//diff between encryption and hashing -> encryption is bad , it is two sided , it is decodable , but hashig is good , it is one sided , and even in hahsing , bcrypt is good one..
+
 
 const Register = require("./models/registers");
 const {json} = require("express")
@@ -103,7 +107,9 @@ app.post("/login" , async(req ,res) =>{
 
         const useremail = await Register.findOne({email:email});
 
-        if(useremail.password === password){
+        const isMatch = await bcrypt.compare(password , useremail.password);
+
+        if(isMatch){
             res.status(201).render("index");
         }else{
             res.send("Invalid login details");

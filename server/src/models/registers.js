@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const employeSchema = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema({
     firstname:{
         type:String,
         required:true
@@ -36,3 +36,8 @@ const employeSchema = new mongoose.Schema({
         required:true
     }
 })
+
+//now we need to create collections
+const Register = new mongoose.model("Register" , employeeSchema);
+
+module.exports = Register;

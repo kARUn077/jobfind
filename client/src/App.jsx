@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Routes, Route }  from "react-router-dom";
-import Home from "./User/Home";
-import Register from "./User/Register";
-import Login from "./User/Login";
-import DashBoard from "./User/DashBoard";
-import Notification from "./User/Notification";
-import PastApplication from "./User/PastApplication";
-import './App.css';
+import Home from "./Pages/Home";
+import Register from "./Pages/Register";
+import Login from "./Pages/Login";
+import DashBoard from "./Pages/DashBoard";
+import Notification from "./Pages/Notification";
+import PastApplication from "./Pages/PastApplication";
+//import "./App.css";
 
 function App() {
   return (

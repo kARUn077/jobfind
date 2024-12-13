@@ -84,7 +84,14 @@ app.post("/register" , async(req, res) => {
 
         })
 
+        console.log("the success part " + registerEmployee);
+
+        const token = await registerEmployee.generateAuthToken();
+
+        console.log("the token part " + token);
+
         const registered = await registerEmployee.save();
+        console.log("the page part " + registered)
         res.status(201).render("index");
 
 
@@ -94,6 +101,7 @@ app.post("/register" , async(req, res) => {
 
     }catch(error){
         res.status(400).send(error);
+        console.log("the error part page")
     }
 
 })
@@ -108,6 +116,10 @@ app.post("/login" , async(req ,res) =>{
         const useremail = await Register.findOne({email:email});
 
         const isMatch = await bcrypt.compare(password , useremail.password);
+
+        const token = await useremail.generateAuthToken();
+
+        console.log("the token part " + token);
 
         if(isMatch){
             res.status(201).render("index");
@@ -134,6 +146,23 @@ app.get("/",(req,res)=>{
 });
 
 app.use("/api", UserRoute)
+
+const jwt = require("jsonwebtoken");
+const { createDiffieHellmanGroup } = require("crypto");
+
+// const createToken = async() => {
+//     const token = await jwt.sign({_id:"675ae5dfcacd7efda1ba39d7"} , "achauscuahscbahcbahssbchahbscshbabhcbahbh" , {
+//         expiresIn: "2 seconds"
+//     })
+//     console.log(token)
+
+//     const userVer = await jwt.verify(token ,"achauscuahscbahcbahssbchahbscshbabhcbahbh")
+//     console.log(userVer)
+// }
+
+// createToken();
+// JWT is commonly used to verify the identity of a user after they log in to an application.
+
 
 app.listen(port , (req , res)=>{
     console.log( `Server is running at ${port}`)

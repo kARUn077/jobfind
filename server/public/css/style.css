@@ -85,3 +85,12 @@ p a:hover {
     font-size: 16px;
     background: #f9f9f9;
 }
+
+.registration-form {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }

@@ -16,6 +16,7 @@ const Register = require("./models/registers");
 const {json} = require("express")
 
 const UserRoute = require("./routes/User.route");
+const JobRoute = require("./routes/Job.route");
 
 const corsOptions ={
     origin: "http://localhost:3000",
@@ -115,7 +116,6 @@ app.post("/login" , async(req ,res) =>{
             res.send("Invalid login details");
         }
 
-
     }catch(error){
         res.status(400).send("Invalid login details")
     }
@@ -128,12 +128,8 @@ app.post("/login" , async(req ,res) =>{
 // console.log(path.join(__dirname , "../"))
 
 
-
-app.get("/",(req,res)=>{
-    res.render("index");
-});
-
 app.use("/api", UserRoute)
+app.use("/api", JobRoute)
 
 app.listen(port , (req , res)=>{
     console.log( `Server is running at ${port}`)

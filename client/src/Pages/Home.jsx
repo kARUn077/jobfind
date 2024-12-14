@@ -60,7 +60,7 @@ function Home() {
 
                                                             Simply sign up with an active emails to start receiving reminders of the upcoming notification for the particular platform jobs. Job Finder is your one-stop platform to monitor and showcase your skill progress. Stay on top of your game and ensure you never miss an opportunity to compete and improve.
                                                         </p></div>
-                                                    <Link to="/register" style={{ textDecoration: "none" }}><button className="btn btn-outline-primary"  >
+                                                    <Link to="/User/register" style={{ textDecoration: "none" }}><button className="btn btn-outline-primary"  >
                                                         Sign Up Now
                                                     </button></Link>
                                                 </div>

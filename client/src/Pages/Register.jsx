@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link }  from "react-router-dom";
+import { Link, useNavigate }  from "react-router-dom";
 import { Auth } from "../SvgImage/Auth";
 import { Footer } from "../Components/Footer";
 import { ToastContainer,toast } from "react-toastify";
@@ -14,17 +14,24 @@ function Register() {
     const [name, setName] = useState([])
     const [email, setEmail] = useState([])
     const [password, setPassword] = useState([])
-
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try{
-            const response = await axios.post('http://localhost:4000/api/register', { name:name, email:email, password:password });
+            const response = await axios.post('http://localhost:4502/api/register',
+                {  
+                    name:name,
+                    email:email,
+                    password:password
+                }
+            );
+            console.log(response.data);
             if(response.data==="Email Already Exists"){
                 toast.error("Email Already Exists");
             }
-            else if(response.data==="registered"){
+            else if(response.data.message==="registered"){
                 toast.success("registered");
             }
         }
@@ -37,10 +44,8 @@ function Register() {
         
         const verifyUser = async () => {
             const isTokenValid = await checkToken();
-            console.log(isTokenValid);
             if (isTokenValid.isValid) {
-                console.log(isTokenValid);
-                //navigate(`/User/Dashboard/${isTokenValid.data}`); // Redirect to main page if token is valid
+                navigate("/User/Dashboard"); // Redirect to main page if token is valid
             }
         };
 
@@ -56,12 +61,12 @@ function Register() {
 
         try {
 
-            const response = await axios.post('http://localhost:4000/api/verify-token', {}, {
+            const response = await axios.post('http://localhost:4502/api/verify-token', {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response);
+            console.log(response.data);
             return { isValid: response.data.valid, data: response.data.data };
         } catch (error) {
             console.error(error);

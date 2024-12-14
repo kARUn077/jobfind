@@ -6,6 +6,8 @@ import Login from "./Pages/Login";
 import DashBoard from "./Pages/DashBoard";
 import Notification from "./Pages/Notification";
 import PastApplication from "./Pages/PastApplication";
+import CreateJob from "./Pages/Admin/CreateJob";
+import Candidates from "./Pages/Admin/Candidates";
 //import "./App.css";
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
           <Route path="/User/dashBoard" element={<DashBoard />}></Route>
           <Route path="/User/notification" element={<Notification />}></Route>
           <Route path="/User/pastApplication" element={<PastApplication />}></Route>
+          <Route path="/Admin/createJob" element={<CreateJob />}></Route>
+          <Route path="/Admin/candidates" element={<Candidates />}></Route>
         </Routes>
       </BrowserRouter>
     </>

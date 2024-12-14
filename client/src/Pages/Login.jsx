@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { Link }  from "react-router-dom";
+import { Link, useNavigate }  from "react-router-dom";
 import { ToastContainer,toast } from "react-toastify";
 import { Auth } from "../SvgImage/Auth";
 import { Footer } from "../Components/Footer";
@@ -14,19 +14,18 @@ function Login() {
     const [name, setName] = useState([])
     const [email, setEmail] = useState([])
     const [password, setPassword] = useState([])
-
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try{
-            const response = await axios.post('http://localhost:4000/api/login',
+            const response = await axios.post('http://localhost:4502/api/login',
                 { 
                     email:email,
                     password:password
                 }
             );
-            console.log(response.data);
             if(response.data.message==="Incorrect Password"){
                 toast.error("Incorrect Password");
             }
@@ -34,8 +33,10 @@ function Login() {
                 toast.error("Please Register");
             }
             else if(response.data.message==="success"){
-                toast.success("Logined");
+                localStorage.setItem('authToken', response.data.token);
+                navigate("/User/Dashboard");
             }
+            console.log(response.data.token);
         }
         catch(error){
             console.log(error);

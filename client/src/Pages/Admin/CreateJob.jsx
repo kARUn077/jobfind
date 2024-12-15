@@ -1,8 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Nav } from "./Nav";
-import { ToastContainer,toast } from "react-toastify";
+import moment from "moment";
+import { CgClose } from "react-icons/cg";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -14,61 +16,110 @@ function CreateJob() {
     const [role, setRole] = useState([])
     const [eligibility, setEligibility] = useState([])
     const [skills, setSkills] = useState([])
-    const [lastdate, setLastDate] = useState([])
-    const [location, setLocation] = useState([])
     const [salary, setSalary] = useState([])
+    const [lastDate, setLastDate] = useState([])
+    const [lastTime, setLastTime] = useState([])
     const [aboutus, setAboutUs] = useState([])
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const fetchUserData = async () => {
 
-        try{
-            const response = await axios.post('http://localhost:4502/api/jobCreate',
-                { 
-                    role:role,
-                    eligibility:eligibility,
-                    skills:skills,
-                    lastdate:lastdate,
-                    location:location,
-                    salary:salary,
-                    aboutus:aboutus
+        try {
+            const response = await axios.get('http://localhost:4502/api/fetchJob',
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                    }
                 }
             );
             console.log(response.data);
-            if(response.data.message==="job created"){
-                toast.success("Job Created Successfully");
-            }
-            else{
-                toast.error("Some Error Occured");
-            }
+            setValues(response.data.message);
         }
-        catch(error){
+        catch (error) {
             console.log(error);
         }
     }
 
+    useEffect(() => {
+        fetchUserData();
+    }, [])
 
-    /*const filterSort = pdf == null ? "" : pdf.filter(value =>  value.type === "pdf" )
-    .sort((a,b) => a.date < b.date ? 1 : -1)
-    { 
-                            pdf === null ? "" : filterSort.map((data) => {
-                                return <tr>
-                                    <td>*</td>
-                                    <td>{data.title}</td>
-                                    <td>{data.date}</td>
-                                    <td><button className="btn btn-outline-success" onClick={() => showPdf(data.pdf)}>Click here</button></td>
-                                </tr>
-                            })
-                        }*/
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:4502/api/jobCreate',
+                {
+                    role: role,
+                    eligibility: eligibility,
+                    skills: skills,
+                    salary: salary,
+                    lastDate: lastDate,
+                    lastTime: lastTime,
+                    aboutus: aboutus
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                }
+            );
+            if (response.data.message === "job created") {
+                fetchUserData();
+                toast.success("Job Created Successfully");
+            }
+            else if (response.data === "role must be unique") {
+                toast.error("Role must be Unique");
+            }
+            else {
+                toast.error("Some Error Occured");
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    const showCandidates = (role) => {
+
+    }
+
+    const deleteJob = async(role) => {
+
+        try {
+            const response = await axios.post('http://localhost:4502/api/deleteJob',
+                {
+                    role: role,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                }
+            );
+            if (response.data.data === "deleted job") {
+                fetchUserData();
+                toast.success("Job Deleted Successfully");
+            }
+            else {
+                toast.error("Some Error Occured");
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <>
             <Nav />
             <div>
                 <h4>Jobs Created
-                <button type="button" class="btn btn-outline-primary" style={{ float: "right" }} data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Create a Job
-                </button>
+                    <button type="button" class="btn btn-outline-primary" style={{ float: "right" }} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Create a Job
+                    </button>
                 </h4>
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -86,24 +137,25 @@ function CreateJob() {
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Eligibility</label>
-                                            <input type="text"  class="form-control" placeholder="Educational Qualification" onChange={(e) => setEligibility(e.target.value)} />
+                                            <input type="text" class="form-control" placeholder="Educational Qualification" onChange={(e) => setEligibility(e.target.value)} />
                                         </div>
                                         <div class="col-md-6">
                                             <label for="inputSkills" class="form-label">Skills Needed</label>
                                             <input type="text" class="form-control" id="inputSkills" onChange={(e) => setSkills(e.target.value)} />
                                         </div>
                                         <div class="col-md-6">
-                                            <label  class="form-label">Last Date to Apply</label>
-                                            <input type="date" class="form-control"  onChange={(e) => setLastDate(e.target.value)} />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Location</label>
-                                            <input type="text" class="form-control" onChange={(e) => setLocation(e.target.value)} />
-                                        </div>
-                                        <div class="col-md-6">
                                             <label class="form-label">Salary (in Rupees)</label>
                                             <input type="number" class="form-control" onChange={(e) => setSalary(e.target.value)} />
                                         </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Last Date to Apply</label>
+                                            <input type="date" class="form-control" onChange={(e) => setLastDate(e.target.value)} />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Untill Time</label>
+                                            <input type="time" class="form-control" onChange={(e) => setLastTime(e.target.value)} />
+                                        </div>
+
                                         <div class="form-floating">
                                             <textarea class="form-control" placeholder="Please give some job descriptions" id="floatingTextarea2" style={{ height: "100px" }} onChange={(e) => setAboutUs(e.target.value)}></textarea>
                                             <label for="floatingTextarea">Brief Intro about Job</label>
@@ -125,14 +177,26 @@ function CreateJob() {
                 <thead>
                     <tr>
                         <th scope="col">Role Offered</th>
-                        <th scope="col">Eligibitiy</th>
-                        <th scope="col">Skills Needed</th>
-                        <th scope="col">Salary</th>
+                        <th scope="col">Eligibility</th>
+                        <th scope="col">Salary in Rupees</th>
+                        <th scope="col">Last Date</th>
                         <th scope="col">Candidates</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    {
+                        values === null ? "" : values.map((value) => {
+                            return <tr>
+                                <td>{value.role}</td>
+                                <td>{value.eligibility}</td>
+                                <td>{" ₹ "+value.salary}</td>
+                                <td>{moment(value.lastDate).format('Do MMM YY, h:mm a')}</td>
+                                <td><button className="btn btn-outline-success" onClick={() => showCandidates(value.role)}>Click here</button></td>
+                                <td><CgClose onClick={() =>deleteJob(value.role)} /></td>
+                            </tr>
+                        })
+                    }
                 </tbody>
             </table>
             <ToastContainer />

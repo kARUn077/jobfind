@@ -26,11 +26,12 @@ function AdminDash() {
                         }
                     }
                 );
+                console.log(response.data.message);
                 setFerm(response.data.message.ferm);
                 setGmail(response.data.message.gmail);
-                setPhone(response.data.message.personalDetails[0].phone);
-                setCity(response.data.message.personalDetails[0].city);
-                setState(response.data.message.personalDetails[0].state);
+                setPhone(response.data.message.adminDetails[0].phone);
+                setCity(response.data.message.adminDetails[0].city);
+                setState(response.data.message.adminDetails[0].state);
             }
             catch (error) {
                 console.log(error);

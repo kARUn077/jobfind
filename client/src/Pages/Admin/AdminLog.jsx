@@ -33,7 +33,7 @@ function AdminLog() {
             }
             else if(response.data.message==="success"){
                 localStorage.setItem('authToken', response.data.token);
-                navigate("/User/Dashboard");
+                navigate("/Admin/adminDash");
             }
         }
         catch(error){

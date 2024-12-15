@@ -1,7 +1,8 @@
 //backend
+require('dotenv').config();
 const express = require("express")
 const app = express()
-const PORT = require("port")
+// const PORT = require("port")
 const port = process.env.PORT || 4502;
 const cors = require("cors");
 const hbs = require("hbs");   //partial ke liye
@@ -165,3 +166,5 @@ const { createDiffieHellmanGroup } = require("crypto");
 app.listen(port , (req , res)=>{
     console.log( `Server is running at ${port}`)
 }) 
+
+// console.log(process.env.SECRET_KEY)   

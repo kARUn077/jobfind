@@ -7,6 +7,6 @@ const authenticateUser = require('../middleware/auth.middleware');
 
 JobRoute.post('/jobCreate', authenticateUser, jobCreate);
 JobRoute.get('/fetchJob', authenticateUser, fetchJob);
-JobRoute.get('/deleteJob', authenticateUser, deleteJob);
+JobRoute.post('/deleteJob', authenticateUser, deleteJob);
 
 module.exports = JobRoute ;

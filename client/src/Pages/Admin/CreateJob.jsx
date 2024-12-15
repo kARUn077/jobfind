@@ -21,25 +21,26 @@ function CreateJob() {
     const [lastTime, setLastTime] = useState([])
     const [aboutus, setAboutUs] = useState([])
 
-    useEffect(() => {
-        const fetchUserData = async () => {
+    const fetchUserData = async () => {
 
-            try {
-                const response = await axios.get('http://localhost:4502/api/fetchJob',
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${localStorage.getItem('authToken')}`
-                        }
+        try {
+            const response = await axios.get('http://localhost:4502/api/fetchJob',
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
                     }
-                );
-                console.log(response.data);
-                setValues(response.data.message);
-            }
-            catch (error) {
-                console.log(error);
-            }
+                }
+            );
+            console.log(response.data);
+            setValues(response.data.message);
         }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
         fetchUserData();
     }, [])
 
@@ -64,9 +65,12 @@ function CreateJob() {
                     }
                 }
             );
-            console.log(response.data);
             if (response.data.message === "job created") {
+                fetchUserData();
                 toast.success("Job Created Successfully");
+            }
+            else if (response.data === "role must be unique") {
+                toast.error("Role must be Unique");
             }
             else {
                 toast.error("Some Error Occured");
@@ -77,15 +81,17 @@ function CreateJob() {
         }
     }
 
-    const showCandidates = () => {
+    const showCandidates = (role) => {
 
     }
 
-    const deleteJob = async(e) => {
-        e.preventDefault();
+    const deleteJob = async(role) => {
 
         try {
-            const response = await axios.get('http://localhost:4502/api/deleteJob',
+            const response = await axios.post('http://localhost:4502/api/deleteJob',
+                {
+                    role: role,
+                },
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -93,8 +99,8 @@ function CreateJob() {
                     }
                 }
             );
-            console.log(response.data);
             if (response.data.data === "deleted job") {
+                fetchUserData();
                 toast.success("Job Deleted Successfully");
             }
             else {
@@ -187,7 +193,7 @@ function CreateJob() {
                                 <td>{" ₹ "+value.salary}</td>
                                 <td>{moment(value.lastDate).format('Do MMM YY, h:mm a')}</td>
                                 <td><button className="btn btn-outline-success" onClick={() => showCandidates(value.role)}>Click here</button></td>
-                                <td><CgClose onClick={deleteJob} /></td>
+                                <td><CgClose onClick={() =>deleteJob(value.role)} /></td>
                             </tr>
                         })
                     }

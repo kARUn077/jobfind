@@ -75,21 +75,50 @@ const verifyToken=async(req,res)=>{
     });
 }
 
-const dashBoardUser = async (req, res) => {
+const fetchUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const ifExists = await personData.findOne({ email: email })
-        if (ifExists) {
-            if (ifExists.password == password) {
-                res.json("success");
+        const fetchUserData = await personData.findOne({_id:req.user.id});
+        console.log(fetchUserData);
+        res.status(201).json({
+            success: true,
+            data: "updated user profile",
+            message: fetchUserData,
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const updateUser = async (req, res) => {
+    try {
+        const updatedUser = await personData.updateMany({_id:req.user.id},
+            {
+                name:req.body.name,
+                email:req.body.email,
+                gender:req.body.gender,
             }
-            else {
-                res.json("Incorrect Password");
+        );
+        const personDetail = await personData.updateOne({_id:req.user.id},
+            {    
+                $set:
+                {
+                    personalDetails:
+                    { 
+                        mobile:req.body.mobile,
+                        qualification:req.body.qualification,
+                        city:req.body.city,
+                        state:req.body.state,
+                    }
+                }
             }
-        }
-        else {
-            res.json("Please Register");
-        }
+        );
+        res.status(201).json({
+            success: true,
+            data: "updated user profile",
+            message: updatedUser,
+            value: personDetail,
+        });
     }
     catch (error) {
         console.log(error);
@@ -97,4 +126,4 @@ const dashBoardUser = async (req, res) => {
 }
 
 
-module.exports = { register, login, verifyToken, dashBoardUser}
+module.exports = { register, login, verifyToken, fetchUser, updateUser}

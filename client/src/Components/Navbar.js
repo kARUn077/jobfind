@@ -1,10 +1,17 @@
 import React from "react";
-import { Link }  from "react-router-dom";
+import { useNavigate, Link }  from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 
 export const Navbar = () => {
 
+    const navigate = useNavigate()
+
+    const logout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("authToken");
+        navigate("/");
+    }
 
     return (
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -27,18 +34,9 @@ export const Navbar = () => {
                         <li class="nav-item">
                             <Link class="nav-link" to="../User/register">Machine Learning Part</Link>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Profile
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><Link class="nav-link" to="../User/register">Update</Link></li>
-                                <li><Link class="nav-link" to="../User/register">Register</Link></li>
-                            </ul>
-                        </li>
                     </ul>
                     <div>
-                        <button type="button" class="btn btn-outline-danger">Logout</button>
+                        <button type="button" class="btn btn-outline-danger" onClick={logout} >Logout</button>
                     </div>
                 </div>
             </div>

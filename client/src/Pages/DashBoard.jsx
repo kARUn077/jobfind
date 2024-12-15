@@ -4,41 +4,83 @@ import axios from "axios";
 import { Navbar } from "../Components/Navbar";
 import { Footer } from "../Components/Footer";
 import { Profile } from "../SvgImage/Profile";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function DashBoard() {
 
-    const [values, setValues] = useState([])
-    const [name, setName] = useState([])
-    const [gender, setGender] = useState([])
-    const [email, setEmail] = useState([])
-    const [mobile, setMobile] = useState([])
-    const [qualification, setQualification] = useState([])
-    const [city, setCity] = useState([])
-    const [state, setState] = useState([])
+    const [name, setName] = useState('')
+    const [gender, setGender] = useState('')
+    const [email, setEmail] = useState('')
+    const [mobile, setMobile] = useState('')
+    const [qualification, setQualification] = useState('')
+    const [city, setCity] = useState('')
+    const [state, setState] = useState('')
 
-    useEffect(()=>{
-        try{
-            const response = axios.post('http://localhost:4000/api/dashBoardUser',
-                {   
-                    name:name,
-                    gender:gender,
-                    email:email,
-                    mobile:mobile,
-                    qualification:qualification,
-                    city:city,
-                    state:state
-                });
-            setValues(response.data);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('http://localhost:4502/api/fetchUser',
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                        }
+                    }
+                );
+                setName(response.data.message.name);
+                setGender(response.data.message.gender);
+                setEmail(response.data.message.email);
+                setMobile(response.data.message.personalDetails[0].mobile);
+                setQualification(response.data.message.personalDetails[0].qualification);
+                setCity(response.data.message.personalDetails[0].city);
+                setState(response.data.message.personalDetails[0].state);
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
-        catch(error){
+        fetchUserData();
+    }, [])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:4502/api/updateUser',
+                {
+                    name: name,
+                    gender: gender,
+                    email: email,
+                    mobile: mobile,
+                    qualification: qualification,
+                    city: city,
+                    state: state,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                }
+            );
+            if (response.data.data === "updated user profile") {
+                toast.success("Updated User Profile Successfully");
+            }
+            else {
+                toast.error("Some Error Occurred");
+            }
+        }
+        catch (error) {
             console.log(error);
         }
-    }, [])
+    }
 
     return (
         <>
             <Navbar />
             <h3>DashBoard</h3>
+            
             <div class="container px-4 text-center">
                 <div class="row gx-5">
                     <div class="col">
@@ -55,29 +97,29 @@ function DashBoard() {
                                 <thead>
                                     <tr>
                                         <th scope="col">Name</th>
-                                        <td>{values==null ? "" : values.name}</td>
+                                        <td>{name == null ? "" : name}</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <th scope="col">Gender</th>
-                                        <td>{values==null ? "" : values.gender}</td>
+                                        <td>{gender == null ? "" : gender}</td>
                                     </tr>
                                     <tr>
                                         <th scope="col">Email</th>
-                                        <td>{values==null ? "" : values.email}</td>
+                                        <td>{email == null ? "" : email}</td>
                                     </tr>
                                     <tr>
                                         <th scope="col">Mobile No.</th>
-                                        <td>{values==null ? "" : values.mobile}</td>
+                                        <td>{mobile == null ? "" : mobile}</td>
                                     </tr>
                                     <tr>
                                         <th scope="col">Qualification</th>
-                                        <td>{values==null ? "" : values.qualification}</td>
+                                        <td>{qualification == null ? "" : qualification}</td>
                                     </tr>
                                     <tr>
                                         <th scope="col">HomeTown</th>
-                                        <td>{values==null ? "" : values.homeTown}</td>
+                                        <td>{city == null || state == null ? "" : city +  ", " + state}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -98,7 +140,7 @@ function DashBoard() {
                             <form class="row g-3">
                                 <div class="col-md-6">
                                     <label for="inputName" class="form-label">Name</label>
-                                    <input type="text" class="form-control" onChange={(e) => setName(e.target.value)} id="inputName" placeholder="Enter your Name"/>
+                                    <input type="text" class="form-control" onChange={(e) => setName(e.target.value)} id="inputName" placeholder="Enter your Name" />
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputGender" class="form-label">Gender</label>
@@ -151,11 +193,12 @@ function DashBoard() {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick={handleSubmit} >Save changes</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <ToastContainer />
             <Footer />
         </>
     )

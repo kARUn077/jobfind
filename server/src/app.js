@@ -16,6 +16,7 @@ const Register = require("./models/registers");
 const {json} = require("express")
 
 const UserRoute = require("./routes/User.route");
+const AdminRoute = require("./routes/Admin.route");
 const JobRoute = require("./routes/Job.route");
 
 const corsOptions ={
@@ -141,6 +142,7 @@ app.post("/login" , async(req ,res) =>{
 
 
 app.use("/api", UserRoute)
+app.use("/api", AdminRoute)
 app.use("/api", JobRoute)
 
 const jwt = require("jsonwebtoken");

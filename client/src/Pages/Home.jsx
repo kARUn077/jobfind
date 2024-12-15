@@ -1,12 +1,18 @@
 import React from "react";
 import { FaCode, FaBell, FaEnvelope } from 'react-icons/fa';
 import { ImLocation, ImEnvelop } from "react-icons/im";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./landing.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 
 function Home() {
+
+    const navigate = useNavigate()
+
+    const redirect = () => {
+        navigate("./Admin/adminReg")
+    }
 
     return (
         <>
@@ -32,7 +38,7 @@ function Home() {
                                 </li>
                             </ul>
                             <div>
-                                <button type="button" class="btn btn-danger" >Get Started</button>
+                                <button type="button" class="btn btn-danger" onClick={redirect} >Admin Corner</button>
                             </div>
                         </div>
                     </div>

@@ -18,6 +18,7 @@ const {json} = require("express")
 const UserRoute = require("./routes/User.route");
 const AdminRoute = require("./routes/Admin.route");
 const JobRoute = require("./routes/Job.route");
+const ApplicationRoute = require("./routes/Application.route");
 
 const corsOptions ={
     origin: "http://localhost:3000",
@@ -144,6 +145,7 @@ app.post("/login" , async(req ,res) =>{
 app.use("/api", UserRoute)
 app.use("/api", AdminRoute)
 app.use("/api", JobRoute)
+app.use("/api", ApplicationRoute)
 
 const jwt = require("jsonwebtoken");
 const { createDiffieHellmanGroup } = require("crypto");

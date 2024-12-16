@@ -6,6 +6,7 @@ import Register from "./Pages/Register";
 import Login from "./Pages/Login";
 import DashBoard from "./Pages/DashBoard";
 import Notification from "./Pages/Notification";
+import ApplicationWindow from "./Pages/ApplicationWindow";
 import PastApplication from "./Pages/PastApplication";
 
 import AdminReg from "./Pages/Admin/AdminReg";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/User/login" element={<Login />}></Route>
           <Route path="/User/dashBoard" element={<DashBoard />}></Route>
           <Route path="/User/notification" element={<Notification />}></Route>
+          <Route path="/User/applicationWindow" element={<ApplicationWindow />}></Route>
           <Route path="/User/pastApplication" element={<PastApplication />}></Route>
 
           <Route path="/Admin/adminreg" element={<AdminReg />}></Route>

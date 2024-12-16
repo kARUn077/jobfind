@@ -34,7 +34,6 @@ const login = async (req, res) => {
 
         if (ifExists) {
             if (ifExists.password == password) {
-                console.log(ifExists._id);
 
                 const token = jwt.sign(
                     { id:ifExists._id, name:ifExists.name, email:ifExists.email },
@@ -78,7 +77,7 @@ const verifyToken=async(req,res)=>{
 const fetchUser = async (req, res) => {
     try {
         const fetchUserData = await personData.findOne({_id:req.user.id});
-        console.log(fetchUserData);
+        
         res.status(201).json({
             success: true,
             data: "updated user profile",

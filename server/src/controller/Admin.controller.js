@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const adminRegister = async (req, res) => {
     try {
-        const ifExists = await adminData.findOne({ email: req.body.email });
+        const ifExists = await adminData.findOne({ gmail: req.body.gmail });
         if (ifExists) {
             res.status(201).json("Email Already Exists");
         }

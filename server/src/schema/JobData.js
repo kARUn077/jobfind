@@ -7,6 +7,9 @@ const jobSchema = new mongoose.Schema({
     gmail:{
         type:String
     },
+    ferm:{
+        type:String
+    },
     role:{
         type:String
     },

@@ -1,5 +1,5 @@
 //backend
-require('dotenv').config();
+//require('dotenv').config();
 const express = require("express")
 const app = express()
 // const PORT = require("port")
@@ -9,8 +9,8 @@ const hbs = require("hbs");   //partial ke liye
 const path = require("path");
 require("./db/connection");
 const bcrypt = require("bcryptjs")
-const cookieParser = require("cookie-parser")
-const auth = require("./middleware/auth")
+//const cookieParser = require("cookie-parser")
+const auth = require("./middleware/auth.middleware")
 
 //diff between encryption and hashing -> encryption is bad , it is two sided , it is decodable , but hashig is good , it is one sided , and even in hahsing , bcrypt is good one..
 
@@ -31,7 +31,7 @@ const corsOptions ={
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(express.urlencoded({extended:false}));
 
 

@@ -3,7 +3,7 @@ const express = require('express');
 const AdminRoute = express.Router();
 
 const { adminRegister, adminLogin, verifyToken, fetchAdmin, updateAdmin } = require('../controller/Admin.controller');
-const authenticateUser = require('../middleware/auth');
+const authenticateUser = require('../middleware/auth.middleware');
 
 AdminRoute.post('/adminRegister', adminRegister);
 AdminRoute.post('/adminLogin', adminLogin);

@@ -13,8 +13,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 function Notification() {
 
     const navigate = useNavigate()
-    const [data, setData] = useState([])
-    const [message, setMessage] = useState([])
+    const [values, setValues] = useState([])
 
     const handleSubmit = async () => {
 
@@ -27,8 +26,8 @@ function Notification() {
                     }
                 }
             );
-            setData(response.data.data);
-            setMessage(response.data.message);
+            console.log(response.data.data);
+            setValues(response.data.data);
         }
         catch (error) {
             console.log(error);
@@ -39,19 +38,19 @@ function Notification() {
         handleSubmit();
     }, []);
 
-    const merge = [];
-    const combine = () => {
-        for (let i = 0; i < data.length; i++) {
-            merge.push({
-                admin: data[i],
-                job: message[i],
-            });
-        }
-    }
-    combine();
+    const showApplication = (lastDate, ferm, role) => {
+        const scheduled = moment(lastDate).format('Do MMM YYYY, h:mm:ss a');
+        const currentTime = moment(Date.now()).format('Do MMM YYYY, h:mm:ss a');
 
-    const showApplication = (ferm, role) => {
-        navigate("../User/applicationWindow", { state: { ferm: ferm, role: role } })
+        const ScheduledMoment = moment(scheduled, 'Do MMM YYYY, h:mm:ss a');
+        const currentMoment = moment(currentTime, 'Do MMM YYYY, h:mm:ss a');
+
+        if (currentMoment.isBefore(ScheduledMoment)) {
+            navigate("../User/applicationWindow", { state: { ferm: ferm, role: role } })
+        }
+        else if (currentMoment.isAfter(ScheduledMoment)) {
+            toast.error("Registrations are Cloased");
+        }
     }
 
     return (
@@ -61,54 +60,22 @@ function Notification() {
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Name of the Firm</th>
-                        <th scope="col">Location</th>
+                        <th scope="col">Name of the Ferm</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Eligibitiy</th>
                         <th scope="col">Last Date to Apply</th>
-                        <th scope="col">Apply For Role</th>
+                        <th scope="col">Apply Now</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        merge === null ? "" : merge.map((value) => {
+                        values === null ? "" : values.map((value) => {
                             return <tr>
-                                <td>{value.admin.ferm}</td>
-                                <td>
-                                    {
-                                        value.admin.adminDetails.map((item, index) => {
-                                            return <tr>
-                                                <td key={index} >{item.city + ", " + item.state}</td>
-                                            </tr>
-                                        })
-                                    }
-                                </td>
-                                <td>
-                                    {
-                                        value.job.map((item, index) => {
-                                            return <tr>
-                                                <td>{item.eligibility}<hr/></td>
-                                            </tr>
-                                        })
-                                    }
-                                </td>
-                                <td>
-                                    {
-                                        value.job.map((item, index) => {
-                                            return <tr>
-                                                <td key={index} >{moment(item.lastDate).format('Do MMM YY, h:mm a')}<hr/></td>
-                                            </tr>
-                                        })
-                                    }
-                                </td>
-                                <td>
-                                    {
-                                        value.job.map((item, index) => {
-                                            return <tr>
-                                                <td key={index}><button className="btn btn-outline-success" onClick={() => showApplication(value.admin.ferm,item.role)}>{item.role}</button></td>
-                                            </tr>
-                                        })
-                                    }
-                                </td>
+                                <td>{value.ferm}</td>
+                                <td>{value.role}</td>
+                                <td>{value.eligibility}</td>
+                                <td>{moment(value.lastDate).format('Do MMM YY, h:mm a')}</td>
+                                <td><button className="btn btn-outline-success" onClick={() => showApplication(value.lastDate, value.ferm, value.role)}>Click here</button></td>
                             </tr>
                         })
                     }

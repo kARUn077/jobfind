@@ -3,7 +3,7 @@ const express = require('express');
 const UserRoute = express.Router();
 
 const { register, login, verifyToken, updateUser , fetchUser} = require('../controller/User.controller');
-const authenticateUser = require('../middleware/auth');
+const authenticateUser = require('../middleware/auth.middleware');
 
 UserRoute.post('/register', register);
 UserRoute.post('/login', login);

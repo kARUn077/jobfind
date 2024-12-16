@@ -13,6 +13,7 @@ const jobCreate = async (req, res) => {
         else{
             const createdJob = new jobData({
                 refId:req.user.id,
+                ferm:req.user.ferm,
                 gmail:req.user.gmail,
                 role:req.body.role,
                 eligibility:req.body.eligibility,

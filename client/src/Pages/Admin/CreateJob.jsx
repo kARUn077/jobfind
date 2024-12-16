@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Nav } from "./Nav";
 import moment from "moment";
@@ -12,6 +13,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 function CreateJob() {
 
     const [values, setValues] = useState([])
+    const navigate = useNavigate()
 
     const [role, setRole] = useState([])
     const [eligibility, setEligibility] = useState([])
@@ -32,7 +34,6 @@ function CreateJob() {
                     }
                 }
             );
-            console.log(response.data);
             setValues(response.data.message);
         }
         catch (error) {
@@ -82,7 +83,7 @@ function CreateJob() {
     }
 
     const showCandidates = (role) => {
-
+        navigate("../Admin/candidates", { state: { role: role } })
     }
 
     const deleteJob = async(role) => {

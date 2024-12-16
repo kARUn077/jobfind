@@ -9,6 +9,8 @@ const hbs = require("hbs");   //partial ke liye
 const path = require("path");
 require("./db/connection");
 const bcrypt = require("bcryptjs")
+const cookieParser = require("cookie-parser")
+const auth = require("./middleware/auth")
 
 //diff between encryption and hashing -> encryption is bad , it is two sided , it is decodable , but hashig is good , it is one sided , and even in hahsing , bcrypt is good one..
 
@@ -28,6 +30,7 @@ const corsOptions ={
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({extended:false}));
 
 
@@ -60,6 +63,29 @@ app.get("/" , (req, res) => {
     res.render("index")
 })
 
+app.get("/secret" ,auth , (req, res) => {
+    // console.log(`this is the console here ${req.cookies.jwt}`)
+    res.render("secret")
+}) 
+//This route handler simply renders a page, which is a synchronous operation. There’s no need to perform any async database queries or logic in this route handler.
+
+//The auth middleware already handles asynchronous tasks (e.g., token verification
+
+
+app.get("/logout" , auth  , async(req ,res) => {
+    try{
+        console.log(req.user);
+        res.clearCookie("jwt");
+        console.log("logout successfully")
+
+        await req.user.save();
+        res.render("login");
+    }catch(error){
+        res.status(500).send(error);
+    }
+})
+// the use of async allows you to use await inside the route handler, which is useful if you want to perform asynchronous operations like clearing cookies or logging out the user (e.g., deleting a session from a database or performing other cleanup tasks that might be async).
+
 app.get("/register" , (req, res) => {
     res.render("register")
 })
@@ -87,14 +113,29 @@ app.post("/register" , async(req, res) => {
 
         })
 
-        console.log("the success part " + registerEmployee);
+        // console.log("the success part " + registerEmployee);
 
         const token = await registerEmployee.generateAuthToken();
 
-        console.log("the token part " + token);
+        // console.log("the token part " + token);
+
+        //the res.cookie() function is used to set cookie name to value
+        //syntax:
+        // res.cookie(name  , value , [optional])
+
+        res.cookie("jwt" , token ,{
+            expires:new Date(Date.now() + 30000),
+            httpOnly:true,
+            secure:false,
+            sameSite:"lax"
+        });
+
+        // console.log("Cookie set successfully")
+        // console.log("Incoming request body:", req.body);
+
 
         const registered = await registerEmployee.save();
-        console.log("the page part " + registered)
+        // console.log("the page part " + registered)
         res.status(201).render("index");
 
 
@@ -123,6 +164,13 @@ app.post("/login" , async(req ,res) =>{
         const token = await useremail.generateAuthToken();
 
         console.log("the token part " + token);
+
+        res.cookie("jwt" , token ,{
+            expires:new Date(Date.now() + 30000),
+            httpOnly:true,
+            //  
+           
+        });
 
         if(isMatch){
             res.status(201).render("index");
@@ -168,3 +216,11 @@ app.listen(port , (req , res)=>{
 }) 
 
 // console.log(process.env.SECRET_KEY)   
+
+
+//NOTE;-
+//Use async when:
+// You need to perform asynchronous operations (e.g., database queries, API calls, or other I/O tasks) within the route handler
+
+//Don't use async when:
+// Your route handler only performs synchronous operations (e.g., rendering a page, sending a response) and does not rely on asynchronous logic.

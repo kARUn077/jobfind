@@ -75,14 +75,23 @@ app.get("/secret" ,auth , (req, res) => {
 app.get("/logout" , auth  , async(req ,res) => {
     try{
         console.log(req.user);
+
+        //use filter to logout from current device
+        // req.user.tokens = req.user.tokens.filter((currElement) =>{
+        //     return currElement.token !== req.token
+        // })
+
+        //logout from all devices
+        req.user.tokens = [];
+
         res.clearCookie("jwt");
-        console.log("logout successfully")
+        console.log("logout successfully");
 
         await req.user.save();
         res.render("login");
     }catch(error){
         res.status(500).send(error);
-    }
+    } 
 })
 // the use of async allows you to use await inside the route handler, which is useful if you want to perform asynchronous operations like clearing cookies or logging out the user (e.g., deleting a session from a database or performing other cleanup tasks that might be async).
 
@@ -166,9 +175,9 @@ app.post("/login" , async(req ,res) =>{
         console.log("the token part " + token);
 
         res.cookie("jwt" , token ,{
-            expires:new Date(Date.now() + 30000),
+            expires:new Date(Date.now() + 600000),
             httpOnly:true,
-            //  
+            
            
         });
 

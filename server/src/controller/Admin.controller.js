@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const adminData = require("../schema/AdminData");
 const jwt = require("jsonwebtoken");
+const { registrationMail } = require("../middleware/registrationMail"); 
 
 const adminRegister = async (req, res) => {
     try {
@@ -15,6 +16,9 @@ const adminRegister = async (req, res) => {
                 password: req.body.password
             })
             const registered = await registerAdmin.save();
+
+            // to send the mail
+            registrationMail(req.body.ferm, req.body.gmail);
 
             res.status(201).json({
                 success: true,

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const personData = require("../schema/UserData");
 const jwt = require("jsonwebtoken");
+const { registrationMail } = require("../middleware/registrationMail"); 
 
 const register = async (req, res) => {
     try {
@@ -15,6 +16,9 @@ const register = async (req, res) => {
                 password: req.body.password
             })
             const registered = await registerPerson.save();
+
+            // to send the mail
+            registrationMail(req.body.name, req.body.email);
 
             res.status(201).json({
                 success: true,

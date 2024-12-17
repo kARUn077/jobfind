@@ -3,6 +3,7 @@ const userData = require("../schema/UserData");
 const adminData = require("../schema/AdminData");
 const jobData = require("../schema/JobData");
 const applicationData = require("../schema/ApplicationData");
+const { congratulationMail } = require("../middleware/congratulationMail");
 
 const fetchNotification = async (req, res) => {
     try {
@@ -135,6 +136,9 @@ const acceptConfirmation = async (req, res) => {
                     status: true,
                 }
             );
+
+            // to send the mail
+            congratulationMail(req.body.name, req.body.email, req.user.ferm, req.body.role);
 
             res.status(201).json({
                 success: true,

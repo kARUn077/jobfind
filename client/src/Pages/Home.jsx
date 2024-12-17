@@ -28,13 +28,13 @@ function Home() {
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
                                 <li class="nav-item">
-                                    <Link class="nav-link" to="../User/dashBoard" style={{ color: "white" }}>HomePage</Link>
+                                    <Link class="nav-link" to="/" style={{ color: "white" }}>HomePage</Link>
                                 </li>
                                 <li class="nav-item">
-                                    <Link class="nav-link" to="../User/notification" style={{ color: "white" }}>Features</Link>
+                                    <Link class="nav-link" to="./features" style={{ color: "white" }}>Features</Link>
                                 </li>
                                 <li class="nav-item">
-                                    <Link class="nav-link" to="../User/pastApplication" style={{ color: "white" }}>About</Link>
+                                    <Link class="nav-link" to="./about" style={{ color: "white" }}>About</Link>
                                 </li>
                             </ul>
                             <div>
@@ -111,13 +111,13 @@ function Home() {
                                             <div class="p-6">
                                                 <div className="w-full md:w-4/12 px-4 text-center">
                                                     <div className="relative flex flex-col min-w-0 break-words bg-gray-800 w-full mb-8 shadow-lg rounded-lg">
-                                                        <div className="px-4 py-5 flex-auto">
+                                                        <div className="px-4 py-5 flex-auto" style={{ backgroundColor: "rgb(145, 146, 148, 0.1)" }}>
                                                             <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-500">
                                                                 <FaCode />
                                                             </div>
-                                                            <h6 className="text-xl font-semibold">Track Your Code Profiles</h6>
+                                                            <h6 className="text-xl font-semibold">Track Your Profiles</h6>
                                                             <p className="mt-2 mb-4 text-gray-400">
-                                                                Keep a record of all your coding activities across different platforms.
+                                                                Keep a record of all your past activities across different job notifications.
                                                             </p>
                                                         </div>
                                                     </div>
@@ -128,13 +128,13 @@ function Home() {
                                             <div class="p-6">
                                                 <div className="w-full md:w-4/12 px-4 text-center">
                                                     <div className="relative flex flex-col min-w-0 break-words bg-gray-800 w-full mb-8 shadow-lg rounded-lg">
-                                                        <div className="px-4 py-5 flex-auto">
+                                                        <div className="px-4 py-5 flex-auto" style={{ backgroundColor: "rgb(145, 146, 148, 0.1)" }}>
                                                             <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-yellow-500">
                                                                 <FaBell />
                                                             </div>
-                                                            <h6 className="text-xl font-semibold">Get Timely Contest Reminders</h6>
+                                                            <h6 className="text-xl font-semibold">Get Timely Reminders</h6>
                                                             <p className="mt-2 mb-4 text-gray-400">
-                                                                Never worry about missing a coding contest with our timely email reminders.
+                                                                Never worry about missing an opportunity with our timely email reminders.
                                                             </p>
                                                         </div>
                                                     </div>
@@ -145,7 +145,7 @@ function Home() {
                                             <div class="p-6">
                                                 <div className="w-full md:w-4/12 px-4 text-center">
                                                     <div className="relative flex flex-col min-w-0 break-words bg-gray-800 w-full mb-8 shadow-lg rounded-lg">
-                                                        <div className="px-4 py-5 flex-auto">
+                                                        <div className="px-4 py-5 flex-auto" style={{ backgroundColor: "rgb(145, 146, 148, 0.1)" }}>
                                                             <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-purple-500">
                                                                 <FaEnvelope />
                                                             </div>
@@ -180,25 +180,15 @@ function Home() {
 
                                 <div className="w-full md:w-4/12 px-4 text-center">
                                     <div className="relative flex flex-col min-w-0 break-words bg-gray-700 w-full mb-8 shadow-lg rounded-lg p-6">
-                                        <div className="px-4 py-5 flex-auto">
+                                        <div className="px-4 py-5 flex-auto" style={{ backgroundColor: "rgb(145, 146, 148, 0.1)" }}>
                                             <p className="mt-2 mb-4 text-gray-400">
-                                                "With CodeShrine, I can see all my coding profiles in one place and never miss a contest. It's like seeing infinity in a single glance! The reminders are a lifesaver, and sharing my profile with friends and rivals has never been easier. CodeShrine keeps me sharp and ready for the next big challenge."
+                                            Employment empowers people, enhances their self-esteem, and contributes to mental well-being. It fuels economic growth, reduces poverty, and fosters a sense of purpose among individuals. When new jobs are created, incomes rise, consumer spending increases, and businesses thrive, leading to a robust cycle of prosperity.
                                             </p>
-                                            <h6 className="text-xl font-semibold text-white">- Satoru Gojo</h6>
+                                            <h6 className="text-xl font-semibold text-white">If you are tired of Sleeping, Eating & Phir Repeating. Then Please Try JOB FINDER.</h6>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="w-full md:w-4/12 px-4 text-center">
-                                    <div className="relative flex flex-col min-w-0 break-words bg-gray-700 w-full mb-8 shadow-lg rounded-lg p-6">
-                                        <div className="px-4 py-5 flex-auto">
-                                            <p className="mt-2 mb-4 text-gray-400">
-                                                "Believe it! CodeShrine is my secret weapon to track upcoming contests and share my coding journey with friends. Dattebayo! Whether it's seeing all my profiles in one place or getting crucial reminders, CodeShrine keeps me pumped and ready for every challenge. It's a must-have for every coding ninja!"
-                                            </p>
-                                            <h6 className="text-xl font-semibold text-white">- Naruto Uzumaki</h6>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </section>

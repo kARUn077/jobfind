@@ -16,26 +16,27 @@ function Candidates() {
 
     const [values, setValues] = useState([])
 
-    useEffect(() => {
-        const fetchAdminData = async () => {
-            try {
-                const response = await axios.post('http://localhost:4502/api/fetchCandidates',
-                    {
-                        role: role,
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${localStorage.getItem('authToken')}`
-                        }
+    const fetchAdminData = async () => {
+        try {
+            const response = await axios.post('http://localhost:4502/api/fetchCandidates',
+                {
+                    role: role,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
                     }
-                );
-                setValues(response.data.message);
-            }
-            catch (error) {
-                console.log(error);
-            }
+                }
+            );
+            setValues(response.data.message);
         }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
         fetchAdminData();
     }, [])
 
@@ -56,6 +57,7 @@ function Candidates() {
             );
             if (response.data.message === "accepted") {
                 toast.success("Accepted");
+                fetchAdminData();
             }
             else {
                 toast.error("Some Error Occured");

@@ -7,6 +7,7 @@ export const Footer = () => {
     return (
         <>
             <div class="text-center" style={{color:"white",backgroundColor:"rgba(20, 20, 20, 0.872)"}} >
+                <br/>
                 <div class="row">
                     <div class="col">
                         <h4>Stay Connected to us</h4>

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const userData = require("../schema/UserData");
 const adminData = require("../schema/AdminData");
 const jobData = require("../schema/JobData");
 const applicationData = require("../schema/ApplicationData");
@@ -53,8 +54,8 @@ const submitForm = async (req, res) => {
             const submittedForm = new applicationData({
                 refId: req.user.id,
                 ferm: req.body.ferm,
-                name: req.user.name,
                 role: req.body.role,
+                name: req.user.name,
                 email: req.user.email,
                 imageUrl: req.body.imageUrl,
                 document: req.body.document,
@@ -94,4 +95,91 @@ const fetchCandidates = async (req, res) => {
     }
 }
 
-module.exports = { fetchNotification, application, submitForm, fetchCandidates }
+const fetchPastApplication = async (req, res) => {
+    try {
+        const ifExists = await applicationData.find(
+            {
+                refId: req.user.id,
+                email: req.user.email,
+            }
+        );
+
+        res.status(201).json({
+            success: true,
+            message: ifExists
+        });
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const acceptConfirmation = async (req, res) => {
+    try {
+        const ifExists = await applicationData.findOne(
+            {
+                name: req.body.name,
+                email: req.body.email,
+                ferm: req.user.ferm,
+                role: req.body.role,
+            }
+        );
+
+        if (ifExists) {
+            const accepted = await applicationData.updateOne(
+                {
+                    _id: ifExists._id
+                },
+                {
+                    status: true,
+                }
+            );
+
+            res.status(201).json({
+                success: true,
+                message: "accepted",
+            });
+        }
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const fetchProfile = async (req, res) => {
+    try {
+        const ifExists = await applicationData.findOne(
+            {
+                name: req.body.name,
+                email: req.body.email,
+                ferm: req.user.ferm,
+                role: req.body.role,
+            }
+        );
+
+        if (ifExists) {
+            const profileData = await userData.findOne(
+                {
+                    _id: ifExists.refId,
+                    email: ifExists.email,
+                }
+            );
+
+            res.status(201).json({
+                success: true,
+                data: ifExists,
+                message: profileData,
+            });
+        }
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { fetchNotification, application, submitForm,
+    fetchCandidates, fetchPastApplication,
+    acceptConfirmation, fetchProfile }

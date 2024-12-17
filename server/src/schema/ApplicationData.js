@@ -27,6 +27,9 @@ const applicationSchema = new mongoose.Schema({
     },
     yourself:{
         type:String
+    },
+    status:{
+        type:Boolean
     }
 })
 

@@ -1,27 +1,36 @@
 //backend
-//require('dotenv').config();
-const express = require("express")
+
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 const app = express()
-// const PORT = require("port")
 const port = process.env.PORT || 4502;
-const cors = require("cors");
-const hbs = require("hbs");   //partial ke liye
-const path = require("path");
+
+import cors from "cors";
+import hbs from "hbs";   //partial ke liye
+import path from "path";
 require("./db/connection");
-const bcrypt = require("bcryptjs")
+import bcrypt from "bcryptjs"
 //const cookieParser = require("cookie-parser")
-const auth = require("./middleware/auth.middleware")
+import connectDB from "./utils/db.js";
+// import auth from "./middleware/auth.middleware.js"
+// import companyRoute from "./routes/company.route.js";
+import userRoute from "./routes/User.route.js";
+import jobRoute from "./routes/job.route.js";
+import applicationRoute from "./routes/application.route.js";
 
 //diff between encryption and hashing -> encryption is bad , it is two sided , it is decodable , but hashig is good , it is one sided , and even in hahsing , bcrypt is good one..
 
 
-const Register = require("./models/registers");
-const {json} = require("express")
+// import Register from "./models/registers.js";
+// import { json } from "express";
 
-const UserRoute = require("./routes/User.route");
-const AdminRoute = require("./routes/Admin.route");
-const JobRoute = require("./routes/Job.route");
-const ApplicationRoute = require("./routes/Application.route");
+// import UserRoute from "./routes/User.route.js";
+// import AdminRoute from "./routes/Admin.route.js";
+// import JobRoute from "./routes/Job.route.js";
+// import ApplicationRoute from "./routes/Application.route.js";
+
 
 const corsOptions ={
     origin: "http://localhost:3000",
@@ -33,9 +42,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 //app.use(cookieParser());
 app.use(express.urlencoded({extended:false}));
+app.use('/company', companyRoute); 
 
 
 app.set("view engine","hbs");
+
+// // api's
+// app.use("/api/v1/user", userRoute);
+// app.use("/api/v1/company", companyRoute);
+// app.use("/api/v1/job", jobRoute);
+// app.use("/api/v1/application", applicationRoute);
 
 
 const static_path = path.join(__dirname , "../public")
